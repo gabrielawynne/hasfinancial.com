@@ -124,9 +124,21 @@ p {
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Blur lives on a pseudo-element rather than directly on .site-header so the
+   header itself doesn't become a backdrop-filter ancestor — that would hijack
+   position:fixed descendants (like the mobile .main-nav dropdown) and block
+   their own backdrop-filter from sampling the real page content behind them. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: -1;
 }
 
 .site-header .container {
@@ -1150,11 +1162,7 @@ section {
 }
 
 @media (max-width: 475px) {
-  .brand-name-full {
+  .brand-name {
     display: none;
-  }
-
-  .brand-name-short {
-    display: inline;
   }
 }
